@@ -37,6 +37,25 @@ You could use follow version of packages:
 - `accelerate==1.4.0`
 - `torchcodec==0.2`
 
+```bash
+cd qwen-vl-finetune
+uv venv --python=3.12
+source .venv/bin/activate
+uv pip install torch==2.7.0 torchvision --torch-backend=cu128
+uv pip install transformers==4.51.3 accelerate deepspeed datasets torchcodec qwen-vl-utils[decord]
+uv pip install --no-build-isolation flash-attn==2.8.0.post2
+bash scripts/sft_7b.sh
+```
+
+
+# install ffmpeg if needed
+git clone https://git.videolan.org/git/ffmpeg/nv-codec-headers.git
+cd nv-codec-headers && sudo make install && cd ..
+git clone https://git.ffmpeg.org/ffmpeg.git ffmpeg/
+sudo apt-get install build-essential yasm cmake libtool libc6 libc6-dev unzip wget libnuma1 libnuma-dev nasm
+./ffmpeg/configure --enable-nonfree --enable-cuda-nvcc --enable-libnpp --extra-cflags=-I/usr/local/cuda/include --extra-ldflags=-L/usr/local/cuda/lib64 --disable-static --enable-shared
+
+
 ## Custom Dataset Configuration
 
 The customized data should have the format like:
